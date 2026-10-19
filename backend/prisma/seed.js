@@ -2,65 +2,72 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.davlat.deleteMany();
-  await prisma.davlat.createMany({
+  await prisma.checkIn.deleteMany();
+  await prisma.habit.deleteMany();
+  await prisma.user.deleteMany();
+
+  const user = await prisma.user.create({
+    data: {
+      id: "user_test_001",
+      name: "Test Foydalanuvchi",
+      email: "test@example.com",
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde",
+    },
+  });
+
+  const habit1 = await prisma.habit.create({
+    data: {
+      name: "Ertalab yugurish",
+      description: "Har kuni 30 daqiqa",
+      color: "#f97316",
+      frequency: "daily",
+      userId: user.id,
+    },
+  });
+
+  const habit2 = await prisma.habit.create({
+    data: {
+      name: "Kitob o'qish",
+      description: "Kuniga 10 bet",
+      color: "#3b82f6",
+      frequency: "daily",
+      userId: user.id,
+    },
+  });
+
+  const habit3 = await prisma.habit.create({
+    data: {
+      name: "Suv ichish",
+      description: "2 litr",
+      color: "#22c55e",
+      frequency: "daily",
+      userId: user.id,
+    },
+  });
+
+  const today = new Date();
+
+  const getPastDate = (daysAgo) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - daysAgo);
+    return d;
+  };
+
+  await prisma.checkIn.createMany({
     data: [
       {
-        title: "Yaponiya",
-        location: "Sharqiy Osiyo",
-        size: 377975,
-        maslahatBeraman: true,
-        userId: "user_test_001",
+        habitId: habit1.id,
+        userId: user.id,
+        date: getPastDate(2),
+        note: "Yaxshi tempo",
       },
-      {
-        title: "Rossiya",
-        location: "Yevroosiyo",
-        size: 17098246,
-        maslahatBeraman: true,
-        userId: "user_test_001",
-      },
-      {
-        title: "O'zbekiston",
-        location: "Markaziy Osiyo",
-        size: 448978,
-        maslahatBeraman: true,
-        userId: "user_test_001",
-      },
-      {
-        title: "Fransiya",
-        location: "G'arbiy Yevropa",
-        size: 551695,
-        maslahatBeraman: true,
-        userId: "user_test_001",
-      },
-      {
-        title: "Germaniya",
-        location: "Markaziy Yevropa",
-        size: 357592,
-        maslahatBeraman: true,
-        userId: "user_test_001",
-      },
-      {
-        title: "Angliya",
-        location: "Shimoliy Yevropa",
-        size: 243610,
-        maslahatBeraman: true,
-        userId: "user_test_001",
-      },
-      {
-        title: "Italiya",
-        location: "Janubiy Yevropa",
-        size: 301340,
-        maslahatBeraman: true,
-        userId: "user_test_001",
-      },
-      {
-        title: "Turkiya",
-        location: "Yevroosiyo ko'prigi",
-        size: 783562,
-        maslahatBeraman: true,
-        userId: "user_test_001",
-      },
+      { habitId: habit1.id, userId: user.id, date: getPastDate(1) },
+      { habitId: habit1.id, userId: user.id, date: getPastDate(0) },
+
+      { habitId: habit2.id, userId: user.id, date: getPastDate(1) },
+
+      { habitId: habit3.id, userId: user.id, date: getPastDate(1) },
+      { habitId: habit3.id, userId: user.id, date: getPastDate(0) },
     ],
   });
 

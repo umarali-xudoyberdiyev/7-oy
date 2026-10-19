@@ -25,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(clerkMiddleware());
 
+const habitRoutes = require("./routes/habit.routes");
+
 app.get("/whoami", (req, res) => {
   const { userId, sessionId, sessionClaims } = getAuth(req);
 
