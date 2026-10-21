@@ -51,6 +51,8 @@ app.get("/health", (req, res) => {
   });
 });
 
+app.use("/habits", habitRoutes);
+
 // 404
 app.use((req, res) => {
   res.status(404).json({

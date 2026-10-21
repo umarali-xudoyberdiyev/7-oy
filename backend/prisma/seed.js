@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   await prisma.checkIn.deleteMany();
-  await prisma.habit.deleteMany();
+  await prisma.odatlar.deleteMany();
   await prisma.user.deleteMany();
 
   const user = await prisma.user.create({
@@ -15,7 +15,7 @@ async function main() {
     },
   });
 
-  const habit1 = await prisma.habit.create({
+  const habit1 = await prisma.odatlar.create({
     data: {
       name: "Ertalab yugurish",
       description: "Har kuni 30 daqiqa",
@@ -25,7 +25,7 @@ async function main() {
     },
   });
 
-  const habit2 = await prisma.habit.create({
+  const habit2 = await prisma.odatlar.create({
     data: {
       name: "Kitob o'qish",
       description: "Kuniga 10 bet",
@@ -35,7 +35,7 @@ async function main() {
     },
   });
 
-  const habit3 = await prisma.habit.create({
+  const habit3 = await prisma.odatlar.create({
     data: {
       name: "Suv ichish",
       description: "2 litr",

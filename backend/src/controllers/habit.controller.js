@@ -3,8 +3,8 @@ const ensureUser = require("../utils/ensureUser");
 
 const getAll = async (req, res, next) => {
   try {
-    const habits = await prisma.habit.findMany({
-      where: { userId: req.userId },
+    const habits = await prisma.odatlar.findMany({
+      // where: { userId: req.userId },
       orderBy: { createdAt: "desc" },
       include: {
         _count: { select: { checkIns: true } },
@@ -20,7 +20,7 @@ const create = async (req, res, next) => {
   try {
     await ensureUser(req.userId);
 
-    const habit = await prisma.habit.create({
+    const habit = await prisma.odatlar.create({
       data: {
         ...req.body,
         userId: req.userId,
@@ -36,7 +36,7 @@ const remove = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);
 
-    const existing = await prisma.habit.findFirst({
+    const existing = await prisma.odatlar.findFirst({
       where: { id, userId: req.userId },
     });
 
@@ -44,7 +44,7 @@ const remove = async (req, res, next) => {
       return res.status(404).json({ success: false, error: "Odat topilmadi" });
     }
 
-    await prisma.habit.delete({ where: { id } });
+    await prisma.odatlar.delete({ where: { id } });
     res.status(204).send();
   } catch (err) {
     next(err);
